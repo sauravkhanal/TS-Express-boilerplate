@@ -23,3 +23,5 @@ class ApiError {
 		this.data = data;
 	}
 }
+
+export default ApiError
