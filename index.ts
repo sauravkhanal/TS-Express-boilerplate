@@ -2,6 +2,7 @@ import express from "express";
 import env from "./src/config/env";
 import router from "./src/routes";
 import middleware from "./src/middleware";
+import { errorHandler } from "./src/utils/ErrorHandler";
 
 
 // initialize server
@@ -13,6 +14,8 @@ app.use(middleware);
 //routes
 app.use(router);
 
+//use global error handler
+app.use(errorHandler);
 
 
 // run server and listen for incoming requests
