@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import ApiResponse from "../utils/ApiResponse";
+import ApiResponse from "../../utils/ApiResponse";
+
 
 function defaultResponse(req: Request, res: Response) {
-	// return res.status(200).json({message: "Typescript + Express + Node"})
 
 	return res.status(200).json(
 		new ApiResponse(200, "This is message", {
@@ -12,7 +12,6 @@ function defaultResponse(req: Request, res: Response) {
 }
 
 function echoBody(req: Request, res: Response) {
-    
 
 	return res.status(200).json(
 		new ApiResponse(200, "This is message", {
@@ -21,5 +20,15 @@ function echoBody(req: Request, res: Response) {
 	);
 }
 
+function echoCookie(req: Request, res: Response) {
 
-export const baseController = {defaultResponse, echoBody}
+    return res.status(200).json(
+        new ApiResponse(200, "Cookie request received", {
+            cookie: req?.cookies
+        })
+    )
+}
+
+
+const baseController = {defaultResponse, echoBody, echoCookie}
+export default baseController
