@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import ApiError from "./ApiError";
+import multer from "multer";
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     console.error("An error occurred:", err);
+
+    let statusCode = 500;
+    let message = "Internal Server Error !!!!"
 
     // // Customize error handling based on the type of error
     // if (err instanceof CustomError) {
@@ -11,8 +15,9 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
     //     message = err.message;
     // }
 
-    // Send the error response
-    // res.status(statusCode).json({ message });
+    if (err instanceof multer.MulterError) {
+        message = `Multer error: ${err.message}`;
+    }
 
-    res.status(500).json(new ApiError(500, "Internal server Error !!!!"))
+    res.status(statusCode).json(new ApiError(statusCode, message))
 }
