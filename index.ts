@@ -1,19 +1,17 @@
 import express from "express";
-import env from "./config/env";
-import baseRoute from "./routes/base.routes";
+import env from "./src/config/env";
+import router from "./src/routes";
+import middleware from "./src/middleware";
 
 
 // initialize server
 const app = express();
 
-
 // middlewares
-app.use(express.json());
-
+app.use(middleware);
 
 //routes
-app.use(baseRoute);
-
+app.use(router);
 
 
 
