@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import ApiResponse from "../../utils/ApiResponse";
+import env from "../../config/env";
 
 function defaultResponse(req: Request, res: Response) {
 	return res.status(200).json(
@@ -34,23 +35,36 @@ function echoFormEncode(req: Request, res: Response) {
 }
 
 function echoQueryParams(req: Request, res: Response) {
-	return res
-		.status(200)
-		.json(
-			new ApiResponse(200, "Echo query params request received.", {
-				queryParams: req.query,
-			})
-		);
+	return res.status(200).json(
+		new ApiResponse(200, "Echo query params request received.", {
+			queryParams: req.query,
+		})
+	);
 }
 
 function echoUrlParams(req: Request, res: Response) {
-	return res
-		.status(200)
-		.json(
-			new ApiResponse(200, "Echo params request received.", {
-				queryParams: req.params,
-			})
-		);
+	return res.status(200).json(
+		new ApiResponse(200, "Echo params request received.", {
+			queryParams: req.params,
+		})
+	);
+}
+
+function uploadSingle(req: Request, res: Response) {
+	let fileDetails = req.file
+		? {
+				...req.file,
+				uri: `${env.endpoint}/uploads/${req.file?.filename}`,
+		  }
+		: {};
+	return res.status(200).json(
+		new ApiResponse(200, "Upload single file request received.", {
+			fileDetails,
+			bodyContent: {
+				...req.body,
+			},
+		})
+	);
 }
 
 const baseController = {
@@ -59,6 +73,7 @@ const baseController = {
 	echoCookie,
 	echoFormEncode,
 	echoQueryParams,
-	echoUrlParams
+	echoUrlParams,
+	uploadSingle,
 };
 export default baseController;
