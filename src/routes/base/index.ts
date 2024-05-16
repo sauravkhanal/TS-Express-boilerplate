@@ -13,6 +13,6 @@ baseRoute.route("/form-encode").post(baseController.echoFormEncode)
 baseRoute.route("/query").get(baseController.echoQueryParams)
 baseRoute.route("/param/:key_of_param").get(baseController.echoUrlParams)
 baseRoute.post("/uploadSingle", upload.single('myFile'), baseController.uploadSingle)
-
+baseRoute.post("/uploadMultiple", upload.array('files'), baseController.uploadMultiple)
 
 export default baseRoute

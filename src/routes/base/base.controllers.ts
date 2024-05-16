@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ApiResponse from "../../utils/ApiResponse";
 import env from "../../config/env";
+import multer from "multer";
 
 function defaultResponse(req: Request, res: Response) {
 	return res.status(200).json(
@@ -67,6 +68,26 @@ function uploadSingle(req: Request, res: Response) {
 	);
 }
 
+function uploadMultiple(req: Request, res: Response) {
+	const fileDetails =
+		req.files &&
+		Object.values(req.files).map((file: Express.Multer.File) => {
+			return {
+				...file,
+				uri: `${env.endpoint}/uploads/${file.filename}`,
+			};
+		});
+
+	return res.status(200).json(
+		new ApiResponse(200, "Upload multiple file request received.", {
+			fileDetails,
+			bodyContent: {
+				...req.body,
+			},
+		})
+	);
+}
+
 const baseController = {
 	defaultResponse,
 	echoBody,
@@ -75,5 +96,6 @@ const baseController = {
 	echoQueryParams,
 	echoUrlParams,
 	uploadSingle,
+	uploadMultiple,
 };
 export default baseController;

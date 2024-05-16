@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
 		const originalFileName = file.originalname.split(".");
 		cb(
 			null,
-			originalFileName[0] + "" + uniqueSuffix + "." + originalFileName[1]
+			originalFileName[0].replace(/\s+/g, '') + "" + uniqueSuffix + "." + originalFileName[1]
 		);
 	},
 });
