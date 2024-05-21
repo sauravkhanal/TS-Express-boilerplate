@@ -1,6 +1,6 @@
 import {Router} from "express"
 import baseController from "./base.controllers";
-import upload from "../../middleware/multer";
+import upload from "../../../middleware/multer";
 
 
 

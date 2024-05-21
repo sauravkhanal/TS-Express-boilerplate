@@ -1,6 +1,6 @@
 import express from "express";
 import env from "./src/config/env";
-import router from "./src/routes";
+import router from "./src/routes/";
 import middleware from "./src/middleware";
 import { errorHandler } from "./src/utils/ErrorHandler";
 import { connectDB } from "./src/utils/ConnectDB";

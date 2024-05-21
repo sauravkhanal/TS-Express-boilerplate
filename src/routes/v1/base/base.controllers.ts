@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import ApiResponse from "../../utils/ApiResponse";
-import env from "../../config/env";
+import ApiResponse from "../../../utils/ApiResponse";
+import env from "../../../config/env";
 import multer from "multer";
 
 function defaultResponse(req: Request, res: Response) {
