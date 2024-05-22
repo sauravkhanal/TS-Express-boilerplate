@@ -7,6 +7,8 @@ export interface IUser {
     password: string,
     emailVerified: boolean,
     role?: string,
+    deleted?: boolean,
+    deactivated?: boolean,
 }
 
 export enum UserRoles {

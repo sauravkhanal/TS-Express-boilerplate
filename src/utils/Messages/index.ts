@@ -1,6 +1,7 @@
 export const messages = {
     user: {
       creation_success: "User Created Successfully",
+      retrieval_success: "User retrieved successfully."
     },
     auth: {
       login_success: "LoggedIn Successfully",
