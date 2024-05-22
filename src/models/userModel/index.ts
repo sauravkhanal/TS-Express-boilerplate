@@ -58,7 +58,17 @@ const userSchema = new mongoose.Schema<IUserDocument>({
         type: String,
         enum: Object.values(UserRoles),
         default: UserRoles.USER
-    }
+    }, 
+
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+
+    deactivated: {
+        type: Boolean,
+        default: false
+    },
 
 }, { timestamps: true });
 
