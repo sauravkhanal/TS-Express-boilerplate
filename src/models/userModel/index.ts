@@ -1,9 +1,9 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import { IUser, UserRoles } from "../../routes/v1/users/types";
 import bcrypt from "bcryptjs"
 
 
-export interface IUserDocument extends Document, IUser {
+export interface IUserDocument extends IUser {
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema<IUserDocument>({
 }, { timestamps: true });
 
 
-userSchema.pre<IUserDocument>("save", async function (next) {
+userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         return next();
     }
