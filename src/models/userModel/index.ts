@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema<IUserDocument>({
         required: [true, "Email is required."],
         unique: true,
         validate: {
-            validator: emailValidator, message: (email) => `${email} is not a valid email.`
+            validator: emailValidator, message: `The email format is invalid.`
         }
     },
 
