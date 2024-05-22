@@ -1,22 +1,11 @@
-class ApiResponse {
-    public statusCode: number;
-    public success: boolean;
-    public message: string;
-    public data: Record<string, any>;
+import { Response } from "express";
+import { messages } from "./Messages";
 
-    /**
-     * Constructor for ApiResponse.
-     *
-     * @param {number} statusCode - The HTTP status code of the response (default 200).
-     * @param {Object} data - The data returned in the response.
-     * @param {string} [message="Success"] - The message associated with the response (default is "Success").
-     */
-    constructor(statusCode: number = 200, message: string = "Success", data: Record<string, any> = {}) {
-        this.statusCode = statusCode;
-        this.success = statusCode < 400;
-        this.message = message;
-        this.data = data;
-    }
+
+export function successResponse(res: Response, statusCode: number = 200, message: string = "Request successfully executed.", data?: unknown) {
+    return res.status(statusCode).json({ success: true, message, data })
 }
 
-export default ApiResponse;
+export function failureResponse(res: Response, statusCode: number = 500, message: string = messages.error.internal_server_error, data?: unknown) {
+    return res.status(statusCode).json({ success: false, message, data })
+}

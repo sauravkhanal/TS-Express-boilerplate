@@ -1,9 +1,10 @@
 import { Request, Response, Router } from "express";
-import ApiError from "../../../utils/ApiError";
+import { failureResponse } from "../../../utils/ApiResponse";
+import { messages } from "../../../utils/Messages";
 
 const notFoundRouter = Router()
 notFoundRouter.route("*").all((_: Request, res:Response)=>{
-    return res.status(404).json(new ApiError(404, "Resource not found"))
+    return failureResponse(res, 404 , messages.error[404])
 })
 
 export default notFoundRouter

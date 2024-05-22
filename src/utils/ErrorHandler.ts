@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import ApiError from "./ApiError";
 import multer from "multer";
+import { failureResponse } from "./ApiResponse";
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     console.error("An error occurred:", err);
@@ -19,5 +19,5 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
         message = `Multer error: ${err.message}`;
     }
 
-    res.status(statusCode).json(new ApiError(statusCode, message))
+    return failureResponse(res, statusCode, message)
 }
