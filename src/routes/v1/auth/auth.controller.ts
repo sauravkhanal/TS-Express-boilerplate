@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import authRepository from "./auth.service";
 import { IUserDocument } from "../../../models/userModel";
-import { successResponse } from "../../../utils/ApiResponse";
+import { failureResponse, successResponse } from "../../../utils/ApiResponse";
 import { messages } from "../../../utils/Messages";
 import authService from "./auth.service";
+import OTPModel from "../../../models/OTPModel";
 
 const authController = {
 	async login(req: Request, res: Response, next: NextFunction) {
@@ -24,7 +25,23 @@ const authController = {
 		} catch (error) {
 			next(error)
 		}
+	},
+
+
+	async verifyOTP(req: Request, res: Response, next: NextFunction) {
+		try {
+			const { OTP } = req.params;
+			const result = await OTPModel.verifyOTP(parseInt(OTP))
+			console.log(OTP)
+			if (result) {
+				return successResponse(res, 200, messages.OTP.verification_success)
+			}
+			else return failureResponse(res, 400, messages.OTP.invalid_otp)
+		} catch (error) {
+			next(error)
+		}
 	}
+
 
 }
 export default authController;

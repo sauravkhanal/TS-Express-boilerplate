@@ -1,6 +1,8 @@
+import env from "../../config/env";
+
 export const messages = {
 	user: {
-		creation_success: "User Created Successfully",
+		creation_success: "User Created Successfully. \\n OTP has been sent to your email.",
 		retrieval_success: "User retrieved successfully.",
 		update: {
 			update_success: "User details updates successfully.",
@@ -9,6 +11,7 @@ export const messages = {
 			deactivation_success: "User deactivated successfully.",
 			reactivation_success: "User reactivated successfully.",
 		},
+		404: "User not found."
 	},
 	auth: {
 		login_success: "LoggedIn Successfully.",
@@ -25,4 +28,9 @@ export const messages = {
 		internal_server_error: "Internal Server Error",
 		404: "Resource not found"
 	},
+	OTP: {
+		email_Used: `The email is already used. Please verify the OTP sent to email at ${env.endpoint}/v1/auth/verify`,
+		verification_success: "The email has been verified successfully.",
+		invalid_otp: "The otp provided is invalid."
+	}
 };

@@ -51,6 +51,9 @@ const userRepository = {
         return UserModel.findOneAndUpdate({ _id }, { deactivated: false }, { new: true }).select({ "password": false });
     },
 
+    verifyUser(_id: string, email: string): Promise<IUserDocument | null> {
+        return UserModel.findOneAndUpdate({_id, email}, { emailVerified: true}, {new: true}).select({ "password": false });
+    }
 }
 
 export default userRepository;

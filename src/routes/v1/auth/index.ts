@@ -6,5 +6,6 @@ const authRouter = Router();
 
 authRouter.post("/", authController.login);
 authRouter.post("/refresh", requireLogin, authController.refreshAccessToken);
+authRouter.get("/verify/:OTP", authController.verifyOTP)
 
 export default authRouter;

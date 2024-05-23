@@ -4,13 +4,17 @@ import userServices from "./user.services";
 import { successResponse } from "../../../utils/ApiResponse";
 import { messages } from "../../../utils/Messages";
 import env from "../../../config/env";
+import OTPModel from "../../../models/OTPModel";
 
 const userController = {
     async createUser(req: Request<unknown, unknown, IUser>, res: Response, next: NextFunction) {
         try {
             const ppURI = req.file ? `${env.endpoint}/uploads/${req.file?.filename}` : "";
-            const { firstName, middleName, lastName, username, email, profilePicture } = await userServices.createUser({ ...req.body, profilePicture: ppURI });
+            const { _id, firstName, middleName, lastName, username, email, profilePicture } = await userServices.createUser({ ...req.body, profilePicture: ppURI });
+            
             if (username) {
+                // await  authService.generateAndSendOTP(_id, email)
+                await OTPModel.generateAndSendOTP(_id.toString(), email);
                 return successResponse(res, 200, messages.user.creation_success, { firstName, middleName, lastName, username, email, profilePicture })
             }
         } catch (error) {
