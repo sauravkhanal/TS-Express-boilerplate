@@ -3,6 +3,7 @@ import { IUser } from "./types";
 import userServices from "./user.services";
 import { successResponse } from "../../../utils/ApiResponse";
 import { messages } from "../../../utils/Messages";
+import env from "../../../config/env";
 
 const userController = {
     async createUser(req: Request<unknown, unknown, IUser>, res: Response, next: NextFunction) {
@@ -17,24 +18,22 @@ const userController = {
         }
     },
 
-    async getAllUser(_: Request, res: Response, next: NextFunction) {
-        try {
-            const result = await userServices.getAllUser();
-            if (result) {
-                return successResponse(res, 200, messages.user.retrieval_success, result)
-            }
+    async getAllUsers(_: Request, res: Response, next: NextFunction) {
+        try { //TODO:check if admin
+            const result = await userServices.getAllUsers();
+            return successResponse(res, 200, messages.user.retrieval_success, result)
         } catch (error) {
             next(error)
         }
     },
 
-    async getUserById(req: Request, res: Response, next: NextFunction) {
+    async getUserByIdOrUsername(req: Request, res: Response, next: NextFunction) {
         try {
-            const { _id } = req.body
-            const result = await userServices.getUserById(_id);
-            if (result) {
-                return successResponse(res, 200, messages.user.retrieval_success, result)
-            }
+            const { val } = req.params
+            let result
+            if (val.length == 24) result = await userServices.getUserById(val);
+            else result = await userServices.getUserByUsername(val)
+            return successResponse(res, 200, messages.user.retrieval_success, result)
         } catch (error) {
             next(error)
         }
@@ -57,30 +56,76 @@ const userController = {
         }
     },
 
-    async getUserByEmail(req: Request, res: Response, next: NextFunction) {
+    // async getUserByEmail(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const { email } = req.body
+    //         const result = await userServices.getUserById(email);
+    //         return successResponse(res, 200, messages.user.retrieval_success, result)
+    //     } catch (error) {
+    //         next(error)
+    //     }
+    // },
+
+    // async getUserByUsername(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const { username } = req.body
+    //         const result = await userServices.getUserByUsername(username);
+    //         return successResponse(res, 200, messages.user.retrieval_success, result)
+    //     } catch (error) {
+    //         next(error)
+    //     }
+    // },
+
+    async getMyDetails(_: Request, res: Response, next: NextFunction) {
         try {
-            const { _id } = req.body
-            const result = await userServices.getUserById(_id);
-            if (result) {
-                return successResponse(res, 200, messages.user.retrieval_success, result)
-            }
+            const client_id = res.locals.user._id;
+            const result = await userServices.getUserById(client_id);
+            return successResponse(res, 200, messages.user.retrieval_success, result);
         } catch (error) {
             next(error)
         }
     },
-
-    async getUserByUsername(req: Request, res: Response, next: NextFunction) {
+    
+    async deleteUser(_:Request, res: Response, next: NextFunction){
         try {
-            const { username } = req.body
-            const result = await userServices.getUserByUsername(username);
-            if (result) {
-                return successResponse(res, 200, messages.user.retrieval_success, result)
-            }
+            const client_id = res.locals.user._id;
+            const result = await userServices.deleteUser(client_id)
+            return successResponse(res, 200, messages.user.update.deletion_success, result)
         } catch (error) {
-            next(error)
+            next (error);
         }
     },
 
+    async reactivateUser(_: Request, res: Response, next: NextFunction) {
+        try {
+            const client_id = res.locals.user?._id;
+            const result = await userServices.reactivateUser(client_id);
+            return successResponse(res, 200, messages.user.update.reactivation_success, result);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async deactivateUser(_: Request, res: Response, next: NextFunction) {
+        try {
+            const client_id = res.locals.user?._id;
+            const result = await userServices.deactivateUser(client_id);
+            return successResponse(res, 200, messages.user.update.deactivation_success, result);
+        } catch (error) {
+            next(error);
+        }
+    },
+    
+    async recoverUser(_: Request, res: Response, next: NextFunction) {
+        try {
+            const client_id = res.locals.user?._id;
+            const result = await userServices.recoverUser(client_id);
+            return successResponse(res, 200, messages.user.update.recovery_success, result);
+        } catch (error) {
+            next(error);
+        }
+    }
+    
 };
 
 export default userController;
