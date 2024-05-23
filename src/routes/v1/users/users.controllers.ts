@@ -7,9 +7,10 @@ import { messages } from "../../../utils/Messages";
 const userController = {
     async createUser(req: Request<unknown, unknown, IUser>, res: Response, next: NextFunction) {
         try {
-            const result = await userServices.createUser(req.body);
-            if (result) {
-                return successResponse(res, 200, messages.user.creation_success, result)
+            const ppURI = req.file ? `${env.endpoint}/uploads/${req.file?.filename}` : "";
+            const { firstName, middleName, lastName, username, email, profilePicture } = await userServices.createUser({ ...req.body, profilePicture: ppURI });
+            if (username) {
+                return successResponse(res, 200, messages.user.creation_success, { firstName, middleName, lastName, username, email, profilePicture })
             }
         } catch (error) {
             next(error)
@@ -41,8 +42,16 @@ const userController = {
 
     async updateUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const {_id, newData} = req.body;
-            const result = await userServices.updateUser(_id, newData)
+            const client_id = res.locals.user._id
+            const newData: IUser = { ...req.body };
+            if (req.file) {
+                newData.profilePicture = `${env.endpoint}/uploads/${req.file?.filename}`
+            }
+            //TODO: find out if pp is empty or is image
+            //TODO: only allow name, pp to be modified
+            //prevent roles, activated status deleted status from being accessed.
+            const result = await userServices.updateUser(client_id, newData)
+            return successResponse(res, 200, messages.user.update.update_success, result)
         } catch (error) {
             next(error)
         }

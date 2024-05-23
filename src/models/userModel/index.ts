@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema<IUserDocument>({
         }
     },
 
+    profilePicture: {type: String},
+
     emailVerified: {
         type: Boolean,
         default: false
