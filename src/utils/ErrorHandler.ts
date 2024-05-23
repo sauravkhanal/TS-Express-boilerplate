@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import { failureResponse } from "./ApiResponse";
 import mongoose from "mongoose";
+import CustomError from "./CustomError";
 
 interface ErrorResponse {
     statusCode: number;
@@ -16,10 +17,16 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
         message: "Internal Server Error",
     };
 
+    if (error instanceof CustomError) {
+        errorResponse.message = error.message
+        errorResponse.statusCode = error.statusCode
+        errorResponse.errors = error.errors
+    }
     if (error instanceof multer.MulterError) errorResponse = handleMulterError(error)
     else if (typeof error === 'object' && error && 'code' in error && error.code === 11000) errorResponse = handleKeyDuplicationError(error);
     else if (error instanceof mongoose.Error.CastError) errorResponse = handleCastError(error);
     else if (error instanceof mongoose.Error.ValidationError) errorResponse = handleValidationError(error);
+    else console.log(error)
 
     return failureResponse(res, errorResponse.statusCode, errorResponse.message, errorResponse.errors)
 }
