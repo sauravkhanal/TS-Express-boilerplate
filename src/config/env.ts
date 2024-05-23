@@ -12,4 +12,6 @@ export default {
 	refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || "refreshToken",
 	accessTokenValidity: process.env.ACCESS_TOKEN_VALIDITY || "1d",
 	refreshTokenValidity: process.env.REFRESH_TOKEN_VALIDITY || "7d",
+	email: process.env.EMAIL_USERNAME,
+	password: process.env.EMAIL_PASSWORD,
 };
