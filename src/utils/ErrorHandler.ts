@@ -22,12 +22,16 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
         errorResponse.statusCode = error.statusCode
         errorResponse.errors = error.errors
     }
-    if (error instanceof multer.MulterError) errorResponse = handleMulterError(error)
+    else if (error instanceof multer.MulterError) errorResponse = handleMulterError(error)
     else if (typeof error === 'object' && error && 'code' in error && error.code === 11000) errorResponse = handleKeyDuplicationError(error);
     else if (error instanceof mongoose.Error.CastError) errorResponse = handleCastError(error);
     else if (error instanceof mongoose.Error.ValidationError) errorResponse = handleValidationError(error);
-    else console.log(error)
-
+    else {
+        console.log("Uncaught error:")
+        console.log("**********************************************************************************************")
+        console.log(error)
+        console.log("**********************************************************************************************")
+    }
     return failureResponse(res, errorResponse.statusCode, errorResponse.message, errorResponse.errors)
 }
 
