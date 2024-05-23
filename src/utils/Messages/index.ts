@@ -14,7 +14,8 @@ export const messages = {
 		login_success: "LoggedIn Successfully.",
 		invalid_account: "Invalid Password or Email.",
 		token_expired: "The token has expired.",
-		token_not_found: "Unauthorized user. Token not found. Please login."
+		token_not_found: "Unauthorized user. Token not found. Please login.",
+		unauthorized: "The user is not authorized.",
 	},
 	token: {
 		renew_success: "Access token renewed successfully.",
