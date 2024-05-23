@@ -31,6 +31,9 @@ export const messages = {
 	OTP: {
 		email_Used: `The email is already used. Please verify the OTP sent to email at ${env.endpoint}/v1/auth/verify`,
 		verification_success: "The email has been verified successfully.",
-		invalid_otp: "The otp provided is invalid."
+		invalid_otp: "The otp provided is invalid.",
+		invalid_email: "Account with given email doesn't exist. Please create a new account.",
+		regeneration_success: "New otp has been sent to your email.",
+		regeneration_failed: "Couldn't generate new OTP.",
 	}
 };

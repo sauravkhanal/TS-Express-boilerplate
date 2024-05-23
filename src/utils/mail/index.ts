@@ -18,7 +18,7 @@ export default async function sendMail(recipient: string, OTP: number) {
         from: env.email,
         to: recipient,
         subject: "TASK-MANAGER Verify your account.",
-        text: `Your OTP is : ${OTP} \n Enter this otp in the app. \n Go to http://${env.endpoint}/auth/verify/${OTP}`
+        text: `Your OTP is : ${OTP} \n Enter this otp in the app. \n Go to ${env.endpoint}/v1/auth/verify/${OTP}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
